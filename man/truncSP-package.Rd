@@ -12,8 +12,8 @@ Functions for estimation of semi-parametric linear regression models with trunca
 \tabular{ll}{
 Package: \tab truncSP\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2011-05-31\cr
+Version: \tab 1.1\cr
+Date: \tab 2011-09-07\cr
 License: \tab GPL (>=2)\cr
 LazyLoad: \tab yes\cr
 Depends: \tab R(>= 2.10), methods, truncreg, boot\cr
@@ -28,14 +28,14 @@ Maintainer: Anita Lindmark <anita.lindmark@gmail.com>
 Davidson, R., MacKinnon, J. G. (1993) \emph{Estimation and Inference in Econometrics}, Oxford University Press, USA\cr\cr
 Karlsson, M. (2004) Finite sample properties of the QME, \emph{Communications in Statistics - Simulation and Computation}, \bold{5}, pp 567--583\cr\cr
 Karlsson, M. (2006) Estimators of regression parameters for truncated and censored data, \emph{Metrika}, \bold{63}, pp 329--341\cr\cr
-Laitila, T. (2001) Properties of the QME under asymmetrically distributed disturbances, \emph{Statistics & Probability Letters}, \bold{52}, pp 371--352\cr\cr
+Laitila, T. (2001) Properties of the QME under asymmetrically distributed disturbances, \emph{Statistics & Probability Letters}, \bold{52}, pp 347--352\cr\cr
 Lee, M. (1993) Quadratic mode regression, \emph{Journal of Econometrics}, \bold{57}, pp 1-19\cr\cr
 Lee, M., Kim, H. (1998) Semiparametric econometric estimators for a truncated regression model: a review with an extension, \emph{Statistica Neerlandica}, \bold{52(2)}, pp 200--225\cr\cr
 Powell, J. (1986) Symmetrically Trimmed Least Squares Estimation for Tobit Models, \emph{Econometrika}, \bold{54(6)}, pp 1435--1460
 }
 \keyword{ package }
 \seealso{
-\code{\link[truncreg]{truncreg}}, function for estimating models with truncated response variables by maximum likelihood assuming gaussian errors 
+\code{\link[truncreg]{truncreg}}, function for estimating models with truncated response variables by maximum likelihood assuming Gaussian errors 
 }
 \examples{
  ##Simulate a data.frame (model with asymmetrically distributed errors)

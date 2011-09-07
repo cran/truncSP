@@ -19,7 +19,7 @@ print.summary.lt <- function(x, digits= max(3, getOption("digits") - 2), width =
 		cat("\n")
 		if(length(x$confint))
 		{
-			cat(gettextf("%d%% Confidence Intervals (t-distr):",(100*x$level)),"\n")
+			cat(gettextf("%d%% Confidence Intervals:",(100*x$level)),"\n")
 			print.default(format(x$confint, digits = digits), print.gap = 3,
  			quote = FALSE)
 		}
@@ -27,7 +27,7 @@ print.summary.lt <- function(x, digits= max(3, getOption("digits") - 2), width =
 		cat("\n")
 		if(length(x$bootconfint))
 		{
-			cat(gettextf("%d%% Bootstrap Confidence Intervals:", (100*x$level)),"\n")
+			cat(gettextf("%d%% Confidence Intervals (Percentile):", (100*x$level)),"\n")
 			print.default(format(x$bootconfint, digits = digits), print.gap = 3,
  			quote = FALSE)
 		}

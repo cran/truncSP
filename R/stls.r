@@ -14,7 +14,7 @@ stls.fit<-function (mf, x, y, point, direction, bet, ...)
         	x = x, y = y)
 	    z$counts <- z$counts[1]
     	if (z$counts < 10) 
-        	warning("Convergence reached after extremely few iterations. Make sure the specifications \n in the function call are correct (point, direction, starting values etc.).")
+        	warning("Convergence reached after very few iterations. This could be because of incorrect \n specifications (point, direction, starting values etc.) in the function call.")
    	  b <- z$par
     	
     	z$residuals <- y - x %*% b

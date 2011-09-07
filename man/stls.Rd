@@ -46,12 +46,12 @@ stls(formula, data, point = 0, direction = "left", beta = "ols",
  \item{beta}{the method of determining the starting values of the regression coefficients (See Details for more information):
 \itemize{
      \item The default method is \code{"ols"}, meaning that the estimated regression coefficients from fitting a linear model with \code{\link{lm}} are used. 
-\item Method \code{"ml"} means that the estimated regression coefficients from fitting a maximum likelihood model for truncated regression, assuming gaussian errors, are used. The maximum likelihood model is fitted using \code{\link[truncreg]{truncreg}}. 
+\item Method \code{"ml"} means that the estimated regression coefficients from fitting a maximum likelihood model for truncated regression, assuming Gaussian errors, are used. The maximum likelihood model is fitted using \code{\link[truncreg]{truncreg}}. 
 \item The third option is to manually provide starting values as either a vector, column matrix or row matrix. 
 }
 }
   \item{covar}{
-logical. Indicates whether the covariance matrix should be estimated. If \code{TRUE} the covariance matrix is estimated using bootstrap. The default number of replicates is 200 but this can be adjusted (see argument \code{\dots}). However, since the bootstrap procedure is time-consuming the default is \code{covar=FALSE}.
+logical. Indicates whether or not the covariance matrix should be estimated. If \code{TRUE} the covariance matrix is estimated using bootstrap. The default number of replicates is 200 but this can be adjusted (see argument \code{\dots}). However, since the bootstrap procedure is time-consuming the default is \code{covar=FALSE}.
 }
   \item{na.action}{
 a function which indicates what should happen when the data contain \code{NA}s.
@@ -70,10 +70,10 @@ additional arguments. For \code{stls} the number of bootstrap replicates can be 
 }
 }
 \details{
-Uses \code{\link{optim}} ("Nelder--Mead" method) to minimize the objective function described in Powell (1986) wrt the vector of regression coefficients in order to find the STLS estimates. The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (see the \dots--argument). \cr\cr As the starting values of the regression coefficients have a great impact on the result of the minimization it is recommended to use one of the methods for generating these rather than supplying the values manually (unless one is confident that one has a good idea of what the starting values should be).
+Uses \code{\link{optim}} ("Nelder--Mead" method) to minimize the objective function described in Powell (1986) wrt the vector of regression coefficients in order to find the STLS estimates. The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (see the \dots--argument). \cr\cr As the starting values of the regression coefficients can have a great impact on the result of the minimization it is recommended to use one of the methods for generating these rather than supplying the values manually (unless one is confident that one has a good idea of what the starting values should be).
 }
 \value{
-\code{stls} returns an object of class \code{"stls"}. \cr\cr The function \code{summary} prints a summary of the results, including two types of confidence intervals (t-distribution and bootstrap). The generic accessor functions
+\code{stls} returns an object of class \code{"stls"}. \cr\cr The function \code{summary} prints a summary of the results, including two types of confidence intervals (normal approximation and percentile method). The generic accessor functions
 \code{coef}, \code{fitted}, \code{residuals} and \code{vcov} extract various useful features of the value returned by \code{stls}\cr\cr An object of class \code{"stls"}, a list with elements:
   \item{coefficients }{the named vector of coefficients}
   \item{startcoef }{the starting values of the regression coefficients used by \code{\link{optim}}}
@@ -98,7 +98,7 @@ Anita Lindmark  and Maria Karlsson
 \code{\link{stls.fit}}, the function that does the actual fitting \cr\cr
 \code{\link{qme}}, for estimation of models with truncated response variables using the QME estimator \cr\cr
 \code{\link{lt}}, for estimation of models with truncated response variables using the LT estimator \cr\cr
-\code{\link[truncreg]{truncreg}} for estimating models with truncated response variables by maximum likelihood, assuming gaussian errors
+\code{\link[truncreg]{truncreg}} for estimating models with truncated response variables by maximum likelihood, assuming Gaussian errors
 }
 \examples{
 ##Simulate a data.frame
