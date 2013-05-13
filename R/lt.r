@@ -8,8 +8,12 @@ funcval.LT <- function(bet,x,y,cl,cu)
 }
 
 
-lt.fit<-function (mf, x, y, point, direction, bet, cl, cu, ...) 
+lt.fit<-function (formula,mf, point, direction, bet, cl, cu, ...) 
 {
+  y <- model.response(mf, "numeric")
+  y <- matrix(y)
+  x <- model.matrix(formula, mf)
+  
     	dots <- list(...)
     	if (is.null(dots$control)) 
         	control <- list(maxit = 2000)
@@ -34,7 +38,7 @@ lt.fit<-function (mf, x, y, point, direction, bet, cl, cu, ...)
       }
     
     	z$startcoef <- bet
-    	rownames(z$startcoef) <- c("(Intercept)", names(mf[-1]))
+    	rownames(z$startcoef) <- c(dimnames(x)[[2]])
     	colnames(z$startcoef) <- c("")
     	dimnames(z$par) <- dimnames(z$startcoef)
     	z$coefficients <- t(z$par)
@@ -45,8 +49,8 @@ lt.fit<-function (mf, x, y, point, direction, bet, cl, cu, ...)
 
 
 
-lt <- function (formula, data, point = 0, direction = "left", clower = "ols", const=1,	 
-    cupper = 2, beta = "ols", covar = FALSE, na.action, ...) 
+lt <- function (formula, data, point = 0, direction = "left", clower = "ml", const=1,	 
+    cupper = 2, beta = "ml", covar = FALSE, na.action, ...) 
 {
     	cll <- match.call()
     	mf <- match.call(expand.dots = FALSE)
@@ -61,12 +65,10 @@ lt <- function (formula, data, point = 0, direction = "left", clower = "ols", co
     	if (direction == "right") 
         	mf[, 1] <- -mf[, 1]
    	 
-    	y <- model.response(mf, "numeric")
-    	y <- matrix(y)
-    	x <- model.matrix(formula, mf)
+    	
 	if (is.numeric(beta)) 
 	{
-        	bet <- matrix(beta, ncol(x), 1)
+        	bet <- matrix(beta)
         	if (point != 0) 
 		      {
             	bet[1, 1] <- bet[1, 1] - point
@@ -103,7 +105,8 @@ lt <- function (formula, data, point = 0, direction = "left", clower = "ols", co
 		if(length(clower)!=1)
 			stop("'clower' must be a number, a numeric vector of length 1, or a valid method.")
 		cl <- clower
-		cu <- cupper		
+		cl <- const*cl
+		cu <- cupper*cl		
 	}
 	else 
 	{
@@ -124,25 +127,31 @@ lt <- function (formula, data, point = 0, direction = "left", clower = "ols", co
   	if (clower != "ols" && clower != "ml") 
   	 stop("'clower' must be numeric or a valid method.")
 	}
-	z <- lt.fit(mf, x, y, point, direction, bet, cl, cu, ...)
+	z <- lt.fit(formula, mf, point, direction, bet, cl, cu, ...)
 	if (covar) 
 	{
 		dots <- list(...)
 		if (is.null(dots$R)) 
-			R <- 200
+			R <- 2000
 		else R <- dots$R
 		if (is.null(dots$control)) 
         	control <- list(maxit = 2000)
     	else control <- dots$control
-		bootobj <- covar.bootLT(mf, x, funcLT, R = R, beta, bet, clower, const, cupper, point, direction, control)
+		bootobj <- covar.bootLT(mf, funcLT, R = R, formula, beta, bet, clower, const, cupper, point, direction, control)
 		z$covariance <- bootobj[[1]]
-		rownames(z$covariance) <- c("(Intercept)", names(mf[-1]))
-		colnames(z$covariance) <- c("(Intercept)", names(mf[-1]))
+		rownames(z$covariance) <- rownames(z$startcoef)
+		colnames(z$covariance) <- rownames(z$startcoef)
 		z$bootrepl <- bootobj[[2]]
+		z$R <- R
 	}
+	
+  z$call <- cll
+  if(is.numeric(clower))
+    cmeth <- "Manual"
+  else
+    cmeth <- clower
+  z$cvalues <- data.frame(cmeth,const,cl,cu,row.names="")
+  names(z$cvalues) <- c("Method","Constant","Lower","Upper")
 	class(z) <- c("lt")
-	z$call <- cll
-	z$cvalues <- cbind(cl,cu)
-	colnames(z$cvalues) <- c("cl", "cu")
 z
 }

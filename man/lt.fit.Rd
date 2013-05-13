@@ -7,17 +7,14 @@ Function for fitting LT
 Function to find LT estimates of the regression coefficients for regression models with truncated response variables. Uses \code{\link{optim}}. Intended to be called through \code{\link{lt}}, not on its own, since \code{lt} also transforms data into the correct form etc.
 }
 \usage{
-lt.fit(mf, x, y, point, direction, bet, cl, cu, ...)
+lt.fit(formula, mf, point, direction, bet, cl, cu, ...)
 }
 \arguments{
+  \item{formula}{
+     a symbolic description of the model to be estimated
+}
   \item{mf}{
      the \code{model.frame} containing the variables to be used when fitting the model. \code{\link{lt}} transforms the model frame to the correct form before calling \code{lt.fit}. If \code{lt.fit} is called on its own the model frame needs to be transformed manually.
-}
-  \item{x}{
-     design matrix of dimension n * p
-}
-  \item{y}{
-     matrix of truncated observations, with n rows.
 }
   \item{point}{
      point of truncation
@@ -56,26 +53,23 @@ Anita Lindmark  and Maria Karlsson
 \code{\link{lt}}
 }
 \examples{
-##generate a model frame, model matrix and response matrix
+require(utils)
+##Model frame
 n <- 10000
 x <- rnorm(n,0,2)
 y <- 2+x+4*rnorm(n)
 d <- data.frame(y=y, x=x)
 dl0 <- subset(d, y>0)
 mf <- model.frame(y~x, data=dl0)
-xx <- model.matrix(y~x,data=mf)
-yy <- matrix(mf[,1])
 
-##Generate starting values and threshold values
+##Starting values and threshold values
 lmmod <- lm(data=mf)
 bet <- lmmod$coef
 bet <- matrix(bet)
 cl <- sqrt(deviance(lmmod)/df.residual(lmmod))
 cu <- 2*cl
 
-##estimate the regression coefficients
-lt.fit(mf,xx,yy,point=0,direction="left",bet,cl,cu)
+str(lt. <- lt.fit(y~x,mf,point=0,direction="left",bet,cl,cu))
 }
 
 \keyword{ regression }
-

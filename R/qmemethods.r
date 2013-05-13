@@ -1,5 +1,5 @@
 
-print.summary.qme <- function(x, digits= max(3, getOption("digits") - 2), width = getOption("width"), ...)
+print.summary.qme <- function(x, digits= max(3, getOption("digits") - 3), ...)
 {
 	cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
 	if (length(x$coefficients))	 
@@ -14,6 +14,12 @@ print.summary.qme <- function(x, digits= max(3, getOption("digits") - 2), width 
 		cat("Number of iterations:\n")
 		print(x$counts)
 	}
+  cat("\n")
+  if(length(x$cval))
+  {
+    cat("Threshold information:\n")
+    print.data.frame(x$cval, digits = digits)
+  }
 	cat("\n")
 	if(length(x$covariance))
 	{
@@ -40,25 +46,27 @@ print.summary.qme <- function(x, digits= max(3, getOption("digits") - 2), width 
 
 }
 
-	
-
-print.qme <- function (x, digits = max(3, getOption("digits") - 2), width = getOption("width"), ...)
+print.qme <- function (x, digits = max(3, getOption("digits") - 3), ...)
 {
-	cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
- 	if (length(x$coefficients))	 
-	{
- 		cat("Coefficients:\n")
-		print.default(format(x$coefficients, digits = digits), print.gap = 2,
- 		quote = FALSE)
- 	}
-	else cat("No coefficients\n")
-	cat("\n")
-	cat("Iterations:\n")
-	print.default(format(x$counts, digits = digits), print.gap = 2,
- 		quote = FALSE)
- 	cat("\n")
-	invisible(x)
-} 
+  cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
+  if (length(x$coefficients))	 
+  {
+    cat("Coefficients:\n")
+    print.default(format(x$coefficients, digits = digits), print.gap = 2,
+                  quote = FALSE)
+  }
+  else cat("No coefficients\n")
+  cat("\n")
+  cat("Iterations:\n")
+  print.default(format(x$counts, digits = digits,widht=2), print.gap = 2,
+                quote = FALSE)
+  cat("\n")
+  cat("Threshold information:\n")
+  print.data.frame(x$cval, digits = digits)
+  cat("\n")
+  invisible(x)
+}	
+
 
 summary.qme <- function(object,level=0.95,...)
 {
@@ -73,6 +81,7 @@ summary.qme <- function(object,level=0.95,...)
 		ans <- list()
 		ans$call <- x$call
 		ans$counts <- x$counts
+    ans$cval <- x$cval
 		ans$level <- level   
 		ans$coefficients <- cbind(est, se, tval, 2 * pt(abs(tval), rdf, lower.tail = FALSE))
 		dimnames(ans$coefficients) <- list(rownames(t(x$coefficients)), c("Estimate", "Std. Error", "t value", "Pr(>|t|)"))
@@ -91,6 +100,7 @@ summary.qme <- function(object,level=0.95,...)
 		ans <- list()
 		ans$call <- x$call
     ans$counts <- x$counts 
+    ans$cval <- x$cval
 		se <- NA
 		tval <- NA
 		pval <- NA  

@@ -1,7 +1,7 @@
-funcQME <- function(mf,d,beta,bet,cval,const,point,direction,control)
+funcQME <- function(mf,d,formula,beta,bet,cval,const,point,direction,control) ##
 {
 	mf2 <- mf[d,]
-	x <- model.matrix(as.formula(mf2),data=mf2)
+	x <- model.matrix(formula,data=mf2) ##
 	
 	y <- matrix(mf2[,1])
 
@@ -61,15 +61,15 @@ funcQME <- function(mf,d,beta,bet,cval,const,point,direction,control)
 }
 
 
-covar.bootQME <- function(mf,x,funcQME,R,beta,bet,cval,const, point, direction, control)
+covar.bootQME <- function(mf,funcQME,R,formula,beta,bet,cval,const, point, direction, control)
 {
-	bootrepl <- boot(data=mf, statistic=funcQME, R=R, beta=beta,bet=bet,cval=cval,const=const,point=point,direction=direction, control=control)$t	
+	bootrepl <- boot(data=mf, statistic=funcQME, R=R, formula=formula, beta=beta,bet=bet,cval=cval,const=const,point=point,direction=direction, control=control)$t	
 	 
 	bootmean <- apply(bootrepl,2,mean)
 
 	bootmean <- matrix(bootmean)
 
-	k <- ncol(x)
+	k <- ncol(bootrepl)###
 
 	M <- matrix(0,k,k)
 

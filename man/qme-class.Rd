@@ -3,20 +3,20 @@
 \docType{class}
 \alias{qme-class}
 
-\title{Class "qme"}
+\title{Class \code{"qme"}}
 \description{
- Documentation on S4 class \code{"qme"}.
+Documentation on S4 class \code{"qme"}.
 }
 \section{Objects from the Class}{
 Objects from the class are usually obtained by a call to the function \code{\link{qme}}.
 }
 \section{Slots}{
   \describe{
-    \item{\code{call}:}{Object of class \code{"call"} the function call }
+   \item{\code{call}:}{Object of class \code{"call"} the function call }
     \item{\code{coefficients}:}{Object of class \code{"matrix"} the estimated coefficients from fitting a model for truncated regression using the Quadratic Mode Estimator (QME) }
     \item{\code{startcoef}:}{Object of class \code{"matrix"} the starting coefficients used when fitting the model }
-    \item{\code{cval}:}{Object of class \code{"numeric"} threshold used }
-    \item{\code{value}:}{Object of class \code{"numeric"} the value of the objective function corresponding to \code{coefficients} }
+    \item{\code{cval}:}{Object of class \code{"data.frame"} containing information about the threshold value used }
+     \item{\code{value}:}{Object of class \code{"numeric"} the value of the objective function corresponding to \code{coefficients} }
     \item{\code{counts}:}{Object of class \code{"integer"} number of iterations until convergence}
     \item{\code{convergence}:}{Object of class \code{"integer"} indicating whether convergence was achieved }
     \item{\code{message}:}{Object of class \code{"character"} a character string giving any additional information returned by the optimizer }
@@ -35,7 +35,7 @@ Objects from the class are usually obtained by a call to the function \code{\lin
     \item{residuals}{\code{signature(object = "qme")}: extracts the residuals of the model fitted using \code{\link{qme}} }
     \item{summary}{\code{signature(object = "qme")}: summary method }
     \item{vcov}{\code{signature(object = "qme")}: extracts the covariance matrix of the model fitted using \code{\link{qme}} }
-	 }
+   }
 }
 
 \author{

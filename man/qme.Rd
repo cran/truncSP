@@ -15,13 +15,11 @@
   Estimation of linear regression models with truncated response variables (fixed truncation point), using the Quadratic Mode Estimator (QME) (Lee 1993 and Laitila 2001)
 }
 \usage{
-qme(formula, data, point = 0, direction = "left", cval = "ols", 
-  const = 1, beta = "ols", covar = FALSE, na.action, ...)
-\S4method{print}{qme}(x, digits = max(3, getOption("digits") - 2),
-    width= getOption("width"), ...)
+qme(formula, data, point = 0, direction = "left", cval = "ml", 
+  const = 1, beta = "ml", covar = FALSE, na.action, ...)
+\S4method{print}{qme}(x, digits = max(3, getOption("digits") - 3), ...)
 \S4method{summary}{qme}(object, level=0.95, ...)
-\S4method{print}{summary.qme}(x, digits= max(3, getOption("digits") - 2), 
-    width= getOption("width"), ...)
+\S4method{print}{summary.qme}(x, digits = max(3, getOption("digits") - 3), ...)
 \S4method{coef}{qme}(object,...)
 \S4method{vcov}{qme}(object,...)
 \S4method{residuals}{qme}(object,...)
@@ -44,20 +42,20 @@ qme(formula, data, point = 0, direction = "left", cval = "ols",
      the direction of truncation, either \code{"left"} (the default) or \code{"right"}
 }
   \item{cval}{
-     the threshold value to be used when trimming the conditional density of the errors. The default is \code{"ols"} meaning that the residual standard deviation from fitting a linear model using \code{\link{lm}} is used. Method \code{"ml"} uses the estimated residual standard deviation from a maximum likelihood model for truncated regression, as fitted using \code{\link[truncreg]{truncreg}}. It is also possible to manually supply the threshold by setting \code{cval} to be equal to a number or numeric vector of length one.
+     the threshold value to be used when trimming the conditional density of the errors. The default is \code{"ml"} meaning that the estimated residual standard deviation from a maximum likelihood model for truncated regression, fitted using \code{\link[truncreg]{truncreg}}, is used.  Method \code{"ols"} uses the residual standard deviation from fitting a linear model using \code{\link{lm}}. It is also possible to manually supply the threshold by setting \code{cval} to be equal to a number or numeric vector of length one.
 }
   \item{const}{
-     the number by which to multiply the threshold value, if \code{cval="ols"} or \code{"ml"}. \code{const=0.5} would mean that half the estimated standard deviation is used as threshold. The default value is 1.
+     a number that can be used to alter the size of the threshold value. \code{const=0.5} would give a threshold value that is half the original size. The default value is 1.
 }
   \item{beta}{the method of determining the starting values of the regression coefficients (See Details for more information):
 \itemize{
-     \item The default method is \code{"ols"}, meaning that the estimated regression coefficients from fitting a linear model with \code{\link{lm}} are used. 
-\item Method \code{"ml"} means that the estimated regression coefficients from fitting a maximum likelihood model for truncated regression, assuming Gaussian errors, are used. The maximum likelihood model is fitted using \code{\link[truncreg]{truncreg}}. 
+     \item The default method is \code{"ml"}, meaning that the estimated regression coefficients from fitting a maximum likelihood model for truncated regression, assuming Gaussian errors, are used. The maximum likelihood model is fitted using \code{\link[truncreg]{truncreg}}. 
+\item Method \code{"ols"} means that the estimated regression coefficients from fitting a linear model with \code{\link{lm}} are used. 
 \item The third option is to manually provide starting values as either a vector, column matrix or row matrix. 
 }
 }
   \item{covar}{
-    logical. Indicates whether or not the covariance matrix should be estimated. If \code{TRUE} the covariance matrix is estimated using bootstrap, as described in Karlsson (2004). The default number of replicates is 200 but this can be adjusted (see argument \code{\dots}). However, since the bootstrap procedure is time-consuming the default is \code{covar=FALSE}.
+    logical. Indicates whether or not the covariance matrix should be estimated. If \code{TRUE} the covariance matrix is estimated using bootstrap, as described in Karlsson (2004). The default number of replicates is 2000 but this can be adjusted (see argument \code{\dots}). However, since the bootstrap procedure is time-consuming the default is \code{covar=FALSE}.
 }
   \item{na.action}{
      a function which indicates what should happen when the data contain \code{NA}s. 
@@ -65,25 +63,22 @@ qme(formula, data, point = 0, direction = "left", cval = "ols",
  \item{digits}{
     the number of digits to be printed     
 }
- \item{width}{
-     the width of the printing
-}
  \item{level}{
      the desired level of confidence, for confidence intervals provided by \code{summary.qme}. A number between 0 and 1. The default value is \code{0.95}.
 }
  \item{\dots}{
-     additional arguments. For \code{qme} the number of bootstrap replicates can be adjusted by setting \code{R=}the desired number of replicates. Also the \code{control} argument of \code{\link{optim}} can be set by \code{control=list()}.
+     additional arguments. For \code{qme} the number of bootstrap replicates can be adjusted by setting \code{R=}the desired number of replicates. Also the \code{control} argument of \code{\link{optim}} can be set by \code{control=list()} (for more information on this see Details).
 }
 }
 \details{
-  Finds the QME estimates of the regression coefficients by maximizing the objective function described in Lee (1993) wrt the vector of regression coefficients. The maximization is performed by \code{\link{optim}} using the "Nelder--Mead" method. The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (see the \dots--argument). \cr\cr The starting values of the regression coefficients can have a great impact on the result of the maximization. For this reason it is recommended to use one of the methods for generating these rather than supplying the values manually, unless one is confident that one has a good idea of what the starting values should be.
+  Finds the QME estimates of the regression coefficients by maximizing the objective function described in Lee (1993) wrt the vector of regression coefficients. The maximization is performed by \code{\link{optim}} using the "Nelder--Mead" method. The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (for more information see the documentation for \code{\link{optim}}). \cr\cr The starting values of the regression coefficients can have a great impact on the result of the maximization. For this reason it is recommended to use one of the methods for generating these rather than supplying the values manually, unless one is confident that one has a good idea of what the starting values should be.
 }
 \value{
   \code{qme} returns an object of class \code{"qme"}. \cr\cr The function \code{summary} prints a summary of the results, including two types of confidence intervals (normal approximation and percentile method). The generic accessor functions
 \code{coef}, \code{fitted}, \code{residuals} and \code{vcov} extract various useful features of the value returned by \code{qme}\cr\cr An object of class \code{"qme"}, a list with elements:
   \item{coefficients }{the named vector of coefficients}
   \item{startcoef }{the starting values of the regression coefficients used by \code{\link{optim}}}
-  \item{cval }{the threshold value used}
+  \item{cval }{information about the threshold value used. The method and constant value used and the resulting threshold value.}
   \item{value }{the value of the objective function corresponding to \code{coefficients}}
   \item{counts }{number of iterations used by \code{\link{optim}}. See the documentation for \code{\link{optim}} for further details}
   \item{convergence }{from \code{\link{optim}}. An integer code. 0 indicates successful completion. Possible error codes are \cr 1  indicating that the iteration limit maxit had been reached.\cr 10  indicating degeneracy of the Nelder--Mead simplex.}	
@@ -93,6 +88,7 @@ qme(formula, data, point = 0, direction = "left", cval = "ols",
   \item{df.residual }{the residual degrees of freedom}
   \item{call }{the matched call}
   \item{covariance }{if \code{covar}\code{=}\code{TRUE}, the estimated covariance matrix}
+  \item{R }{if \code{covar}\code{=}\code{TRUE}, the number of bootstrap replicates}
   \item{bootrepl }{if \code{covar}\code{=}\code{TRUE}, the bootstrap replicates}
 }
 \references{
@@ -119,18 +115,16 @@ n <- 10000
 x1 <- runif(n,0,10)
 x2 <- runif(n,0,10)
 x3 <- runif(n,-5,5)
-x4 <- runif(n,5,10)
-x5 <- runif(n,-5,5)
 eps <- rexp(n,0.2)- 5
-y <- 2-2*x1+x2+2*x3+x4-x5+eps
-d <- data.frame(y=y,x1=x1,x2=x2,x3=x3,x4=x4,x5=x5)
+y <- 2-2*x1+x2+2*x3+eps
+d <- data.frame(y=y,x1=x1,x2=x2,x3=x3)
    
 ##Use a truncated subsample
 dtrunc <- subset(d, y>0)
 
 ##Use qme to consistently estimate the slope parameters
-qme(y~x1+x2+x3+x4+x5, dtrunc, point=0, direction="left", cval="ols", const=1, 
-   beta="ols", covar=FALSE)
+qme(y~x1+x2+x3, dtrunc, point=0, direction="left", cval="ml", const=1, 
+   beta="ml", covar=FALSE)
    
 ##Example using data "PM10trunc"
 data(PM10trunc)

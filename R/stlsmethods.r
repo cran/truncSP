@@ -1,4 +1,4 @@
-print.summary.stls <- function(x, digits= max(3, getOption("digits") - 2), width = getOption("width"), ...)
+print.summary.stls <- function(x, digits= max(3, getOption("digits") - 3), ...)
 {
 	cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
 	if (length(x$coefficients))	 
@@ -40,7 +40,7 @@ print.summary.stls <- function(x, digits= max(3, getOption("digits") - 2), width
 }
 
 
-print.stls <- function (x, digits = max(3, getOption("digits") - 2), width = getOption("width"), ...)
+print.stls <- function (x, digits = max(3, getOption("digits") - 3), ...)
 {
 	cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
  	if (length(x$coefficients))	 

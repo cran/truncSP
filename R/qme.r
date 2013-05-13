@@ -8,15 +8,19 @@ funcval.QME <- function(bet,x,y,cv)
 
 mlcoef <- function(mf)
 {
-	mlc<-truncreg(as.formula(mf), data=mf, point=0, direction="left")$coef
+	mlc<-truncreg(formula=mf, point=0, direction="left")$coef 
 	return(mlc)
 }
 
 
 
-qme.fit <- function(mf,x,y,point,direction,bet,cv,...)
+qme.fit <- function(formula,mf,point,direction,bet,cv,...)
 {
-	dots <- list(...)
+  y <- model.response(mf, "numeric")   
+  y <- matrix(y)
+  x <- model.matrix(formula,mf)
+  
+  dots <- list(...)
 
 	if (is.null(dots$control)) control <- list(maxit=2000) else control <- dots$control
 
@@ -43,7 +47,7 @@ qme.fit <- function(mf,x,y,point,direction,bet,cv,...)
 	}
 	
 	z$startcoef <- bet
-	rownames(z$startcoef) <- c("(Intercept)",names(mf[-1]))
+	rownames(z$startcoef) <- c(dimnames(x)[[2]])
 	colnames(z$startcoef) <- c("")
 	dimnames(z$par) <- dimnames(z$startcoef)
 	z$coefficients <- t(z$par)
@@ -53,7 +57,7 @@ qme.fit <- function(mf,x,y,point,direction,bet,cv,...)
 }
 
 
-qme <- function(formula,data,point=0,direction="left",cval="ols", const=1,beta="ols",covar=FALSE,na.action,...)
+qme <- function(formula,data,point=0,direction="left",cval="ml", const=1,beta="ml",covar=FALSE,na.action,...)
 {
 	cll <- match.call()
 
@@ -63,20 +67,18 @@ qme <- function(formula,data,point=0,direction="left",cval="ols", const=1,beta="
 	mf$drop.unused.levels <- TRUE			
 	mf[[1L]] <- as.name("model.frame") 		
 	mf <- eval(mf, parent.frame())
-		
+  
+  		
 	if(point!=0)
 		mf[,1] <- mf[,1]-point
 
 	if(direction=="right")
 		mf[,1] <- -mf[,1]
 
-	y <- model.response(mf, "numeric") 	
-	y <- matrix(y)
-	x <- model.matrix(formula,mf)
 	
 	if(is.numeric(beta))
 	{
-		bet <- matrix(beta, ncol(x),1)
+		bet <- matrix(beta) ####
 		if(point!=0)
 		{
 			bet[1,1] <- bet[1,1]-point
@@ -108,9 +110,11 @@ qme <- function(formula,data,point=0,direction="left",cval="ols", const=1,beta="
 	
 	if(is.numeric(cval))
 	{
-		cv <- cval
 		if(length(cval)!= 1)
 			stop("'cval' must be one number or a vector of length 1.")
+    
+		cv <- cval
+		cv <- const*cv
 	}
 	
 	else
@@ -133,24 +137,30 @@ qme <- function(formula,data,point=0,direction="left",cval="ols", const=1,beta="
 			stop("'cval' must be numeric or a valid method.")
 	}
 
-	z <- qme.fit(mf,x,y,point,direction,bet,cv,...)
+	z <- qme.fit(formula,mf,point,direction,bet,cv,...) ###
 	
 	if(covar)
 	{
 		dots <- list(...)
-		if(is.null(dots$R)) R <- 200	
+		if(is.null(dots$R)) 
+      R <- 2000	
 		else R <- dots$R
 		if (is.null(dots$control)) control <- list(maxit=2000) else control <- dots$control
-		bootobj <- covar.bootQME(mf,x,funcQME,R=R,beta,bet,cval,const,point,direction,control)
+		bootobj <- covar.bootQME(mf,funcQME,R=R,formula,beta,bet,cval,const,point,direction,control) ####
 		z$covariance <- bootobj[[1]]
-		rownames(z$covariance) <- c("(Intercept)",names(mf[-1]))
-		colnames(z$covariance) <- c("(Intercept)",names(mf[-1]))
+		rownames(z$covariance) <- rownames(z$startcoef) ##
+		colnames(z$covariance) <- rownames(z$startcoef)
 		z$bootrepl <- bootobj[[2]]
+		z$R <- R
 	}
 
-	class(z) <- c("qme")
 	z$call <- cll
-	z$cval <- cv
-	names(z$cval) <- c("cval")
+  if(is.numeric(cval))
+    cmeth <- "Manual"
+  else
+    cmeth <- cval
+	z$cval <- data.frame(cmeth,const,cv,row.names="")
+	names(z$cval) <- c("Method","Constant","Value")
+  class(z) <- c("qme")
 z
 }

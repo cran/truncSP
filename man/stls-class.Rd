@@ -4,7 +4,7 @@
 \alias{stls-class}
 
 \title{Class "stls" }
-\description{	 Documentation on S4 class \code{"stls"}.}
+\description{   Documentation on S4 class \code{"stls"}.}
 \section{Objects from the Class}{
 Objects from the class are usually obtained by a call to the function \code{\link{stls}}.
 }

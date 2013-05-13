@@ -1,7 +1,7 @@
-funcSTLS <- function(mf,d,beta,bet,point,direction,control)
+funcSTLS <- function(mf,d,formula,beta,bet,point,direction,control)
 {
 	mf2 <- mf[d,]
-	x <- model.matrix(as.formula(mf2),data=mf2)
+	x <- model.matrix(formula,data=mf2)
 	
 	y <- matrix(mf2[,1])
 
@@ -43,15 +43,15 @@ funcSTLS <- function(mf,d,beta,bet,point,direction,control)
 }
 
 
-covar.bootSTLS <- function(mf,x,funcSTLS,R,beta,bet,point,direction,control)
+covar.bootSTLS <- function(mf,funcSTLS,R,formula,beta,bet,point,direction,control)
 {
-	bootrepl <- boot(data=mf, statistic=funcSTLS, R=R, beta=beta,bet=bet,point=point,direction=direction,control=control)$t	
+	bootrepl <- boot(data=mf, statistic=funcSTLS, R=R, formula=formula, beta=beta,bet=bet,point=point,direction=direction,control=control)$t	
 	 
 	bootmean <- apply(bootrepl,2,mean)
 
 	bootmean <- matrix(bootmean)
 
-	k <- ncol(x)
+	k <- ncol(bootrepl)
 
 	M <- matrix(0,k,k)
 

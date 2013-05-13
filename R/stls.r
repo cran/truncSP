@@ -4,8 +4,12 @@ funcval.STLS <- function(bet,x,y)
 	return(funcvalue)
 }
 
-stls.fit<-function (mf, x, y, point, direction, bet, ...) 
+stls.fit<-function (formula, mf, point, direction, bet, ...) 
 {
+  y <- model.response(mf, "numeric")
+  y <- matrix(y)
+  x <- model.matrix(formula, mf)
+  
     	dots <- list(...)
     	if (is.null(dots$control)) 
         	control <- list(maxit = 2000)
@@ -32,7 +36,7 @@ stls.fit<-function (mf, x, y, point, direction, bet, ...)
       }
     
     	z$startcoef <- bet
-    	rownames(z$startcoef) <- c("(Intercept)", names(mf[-1]))
+    	rownames(z$startcoef) <- c(dimnames(x)[[2]])
     	colnames(z$startcoef) <- c("")
     	dimnames(z$par) <- dimnames(z$startcoef)
     	z$coefficients <- t(z$par)
@@ -43,7 +47,7 @@ stls.fit<-function (mf, x, y, point, direction, bet, ...)
 
 
 
-stls <- function (formula, data, point = 0, direction = "left", beta = "ols", covar = FALSE, na.action, ...) 
+stls <- function (formula, data, point = 0, direction = "left", beta = "ml", covar = FALSE, na.action, ...) 
 {
     	cll <- match.call()
     	mf <- match.call(expand.dots = FALSE)
@@ -58,12 +62,10 @@ stls <- function (formula, data, point = 0, direction = "left", beta = "ols", co
     	if (direction == "right") 
         	mf[, 1] <- -mf[, 1]
    	 
-    	y <- model.response(mf, "numeric")
-    	y <- matrix(y)
-    	x <- model.matrix(formula, mf)
+    	
 	if (is.numeric(beta)) 
 	{
-	 bet <- matrix(beta, ncol(x), 1)
+	 bet <- matrix(beta)
  	  if (point != 0) 
     {
    	  bet[1, 1] <- bet[1, 1] - point
@@ -89,20 +91,21 @@ stls <- function (formula, data, point = 0, direction = "left", beta = "ols", co
   	 stop("'beta' must be numeric or a valid method.")
 	}
 
-	z <- stls.fit(mf, x, y, point, direction, bet, ...)
+	z <- stls.fit(formula, mf, point, direction, bet, ...)
 	
 	if (covar) 
 	{
 		dots <- list(...)
 		if (is.null(dots$R)) 
-			R <- 200
+			R <- 2000
 		else R <- dots$R
 		if (is.null(dots$control)) control <- list(maxit=2000) else control <- dots$control
-		bootobj <- covar.bootSTLS(mf, x, funcSTLS, R = R, beta, bet, point, direction, control)
+		bootobj <- covar.bootSTLS(mf, funcSTLS, R = R, formula, beta, bet, point, direction, control)
 		z$covariance <- bootobj[[1]]
-		rownames(z$covariance) <- c("(Intercept)", names(mf[-1]))
-		colnames(z$covariance) <- c("(Intercept)", names(mf[-1]))
+		rownames(z$covariance) <- rownames(z$startcoef)
+		colnames(z$covariance) <- rownames(z$startcoef)
 		z$bootrepl <- bootobj[[2]]
+		z$R <- R
 	}
 	class(z) <- c("stls")
 	z$call <- cll

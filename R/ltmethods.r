@@ -1,4 +1,4 @@
-print.summary.lt <- function(x, digits= max(3, getOption("digits") - 2), width = getOption("width"), ...)
+print.summary.lt <- function(x, digits= max(3, getOption("digits") - 3), ...)
 {
 	cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
 	if (length(x$coefficients))	 
@@ -12,6 +12,12 @@ print.summary.lt <- function(x, digits= max(3, getOption("digits") - 2), width =
 	{
 		cat("Number of iterations:\n")
 		print(x$counts)
+	}
+	cat("\n")
+	if(length(x$cvalues))
+	{
+	  cat("Threshold information:\n")
+	  print.data.frame(x$cvalues, digits = digits)
 	}
 	cat("\n")
 	if(length(x$covariance))
@@ -40,7 +46,7 @@ print.summary.lt <- function(x, digits= max(3, getOption("digits") - 2), width =
 }
 
 
-print.lt <- function (x, digits = max(3, getOption("digits") - 2), width = getOption("width"), ...)
+print.lt <- function (x, digits = max(3, getOption("digits") - 3), ...)
 {
 	cat("\nCall:\n", deparse(x$call), "\n\n", sep = "")
  	if (length(x$coefficients))	 
@@ -55,6 +61,9 @@ print.lt <- function (x, digits = max(3, getOption("digits") - 2), width = getOp
 	print.default(format(x$counts, digits = digits), print.gap = 2,
  		quote = FALSE)
  	cat("\n")
+	cat("Threshold information:\n")
+	print.data.frame(x$cvalues, digits = digits)
+	cat("\n")
 	invisible(x)
 } 
 
@@ -70,7 +79,8 @@ summary.lt <- function(object,level=0.95,...)
 		rdf <- x$df.residual
 		ans <- list()
 		ans$call <- x$call
-    ans$counts <- x$counts   
+    ans$counts <- x$counts
+    ans$cvalues <- x$cvalues
 		ans$level <- level   
 		ans$coefficients <- cbind(est, se, tval, 2 * pt(abs(tval), rdf, lower.tail = FALSE))
 		dimnames(ans$coefficients) <- list(rownames(t(x$coefficients)), c("Estimate", "Std. Error", "t value", "Pr(>|t|)"))
@@ -89,6 +99,7 @@ summary.lt <- function(object,level=0.95,...)
 		ans <- list()
 		ans$call <- x$call 
 		ans$counts <- x$counts
+    ans$cvalues <- x$cvalues
 		se <- NA
 		tval <- NA
 		pval <- NA  

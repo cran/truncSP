@@ -7,17 +7,14 @@ Function for fitting STLS
 Function that utilizes \code{\link{optim}} to find STLS estimates of the regression coefficients for regression models with truncated response variables. Intended to be called through \code{\link{stls}}, not on its own, since \code{stls} also transforms data into the correct form etc.
 }
 \usage{
-stls.fit(mf, x, y, point, direction, bet, ...)
+stls.fit(formula,mf, point, direction, bet, ...)
 }
 \arguments{
+  \item{formula}{
+     a symbolic description of the model to be estimated
+}
    \item{mf}{
      the \code{model.frame} containing the variables to be used when fitting the model. \code{\link{stls}} transforms the model frame to the correct form before calling \code{stls.fit}. If \code{stls.fit} is called on its own the model frame needs to be transformed manually.
-}
-  \item{x}{
-     design matrix of dimension n * p
-}
-  \item{y}{
-     matrix of truncated observations, with n rows.
 }
   \item{point}{
      point of truncation
@@ -51,26 +48,23 @@ Anita Lindmark and Maria Karlsson
 \code{\link{stls}}
 }
 \examples{
-##generate a model frame, model matrix and response matrix
+require(utils)
+##Model frame
 n <- 10000
 x <- rnorm(n,0,2)
 y <- 2+x+4*rnorm(n)
 d <- data.frame(y=y, x=x)
 dl0 <- subset(d, y>0)
 mf <- model.frame(y~x, data=dl0)
-xx <- model.matrix(y~x,data=mf)
-yy <- matrix(mf[,1])
 
-##Generate starting values
+
+##Starting values
 lmmod <- lm(data=mf)
 bet <- lmmod$coef
 bet <- matrix(bet)
 
-
-##estimate the regression coefficients
-stls.fit(mf,xx,yy,point=0,direction="left",bet)
+str(stls. <- stls.fit(y~x,mf,point=0,direction="left",bet))
 }
 
 
 \keyword{ regression }
-

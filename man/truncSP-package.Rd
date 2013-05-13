@@ -12,8 +12,8 @@ Functions for estimation of semi-parametric linear regression models with trunca
 \tabular{ll}{
 Package: \tab truncSP\cr
 Type: \tab Package\cr
-Version: \tab 1.1\cr
-Date: \tab 2011-09-07\cr
+Version: \tab 1.2\cr
+Date: \tab 2013-01-28\cr
 License: \tab GPL (>=2)\cr
 LazyLoad: \tab yes\cr
 Depends: \tab R(>= 2.10), methods, truncreg, boot\cr
@@ -22,7 +22,7 @@ These semi-parametric estimators provide an alternative to maximum likelihood es
 }
 \author{
 Anita Lindmark and Maria Karlsson, Department of Statistics, Umea University\cr\cr
-Maintainer: Anita Lindmark <anita.lindmark@gmail.com>
+Maintainer: Anita Lindmark <anita.lindmark@stat.umu.se>
 }
 \references{
 Davidson, R., MacKinnon, J. G. (1993) \emph{Estimation and Inference in Econometrics}, Oxford University Press, USA\cr\cr
@@ -43,34 +43,30 @@ n <- 10000
 x1 <- runif(n,0,10)
 x2 <- runif(n,0,10)
 x3 <- runif(n,-5,5)
-x4 <- runif(n,5,10)
-x5 <- runif(n,-5,5)
 eps <- rexp(n,0.2)- 5
-y <- 2-2*x1+x2+2*x3+x4-x5+eps
-d <- data.frame(y=y,x1=x1,x2=x2,x3=x3,x4=x4,x5=x5)
+y <- 2-2*x1+x2+2*x3+eps
+d <- data.frame(y=y,x1=x1,x2=x2,x3=x3)
    
 ##Use a truncated subsample
 dtrunc <- subset(d, y>0)
 
 ##Use qme or lt to consistently estimate the slope parameters
-qme(y~x1+x2+x3+x4+x5, dtrunc, point=0, direction="left", cval="ols", const=1, 
+qme(y~x1+x2+x3, dtrunc, point=0, direction="left", cval="ols", const=1, 
    beta="ols", covar=FALSE)
-lt(y~x1+x2+x3+x4+x5, dtrunc, point=0, direction="left", clower="ols", const=1, 
+lt(y~x1+x2+x3, dtrunc, point=0, direction="left", clower="ols", const=1, 
    cupper=2, beta="ols", covar=FALSE)
    
-##Simulate a data.frame
+##Simulate a data.frame (symmetrically distributed errors)
 n <- 10000
 x1 <- runif(n,0,10)
 x2 <- runif(n,0,10)
 x3 <- runif(n,-5,5)
-x4 <- runif(n,5,10)
-x5 <- runif(n,-5,5)
-y <- 1-2*x1+x2+2*x3+x4-x5+rnorm(n,0,2)
-d <- data.frame(y=y,x1=x1,x2=x2,x3=x3,x4=x4,x5=x5)
+y <- 1-2*x1+x2+2*x3+rnorm(n,0,2)
+d <- data.frame(y=y,x1=x1,x2=x2,x3=x3)
 
 ##Use a truncated subsample
 dtrunc <- subset(d, y>0)
   
 ##Use stls to estimate the model
-stls(y~x1+x2+x3+x4+x5, dtrunc, point=0, direction="left", beta="ols", covar=FALSE)
+stls(y~x1+x2+x3, dtrunc, point=0, direction="left", beta="ols", covar=FALSE)
 }

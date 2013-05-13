@@ -3,7 +3,7 @@
 \docType{class}
 \alias{summary.lt-class}
 
-\title{Class "summary.lt"}
+\title{Class \code{"summary.lt"}}
 \description{
  Documentation on S4 class \code{"summary.lt"}
 }
@@ -12,14 +12,14 @@ Objects from the class are usually obtained by a calling \code{summary} on an ob
 }
 \section{Slots}{
   \describe{
-    \item{\code{level}:}{Object of class \code{"numeric"} the level of confidence for confidence intervals }
+     \item{\code{level}:}{Object of class \code{"numeric"} the level of confidence for confidence intervals }
     \item{\code{confint}:}{Object of class \code{"matrix"} confidence intervals for regression coefficients }
     \item{\code{bootconfint}:}{Object of class \code{"matrix"} bootstrap confidence intervals for regression coefficients }
     \item{\code{call}:}{Object of class \code{"call"} the function call }
     \item{\code{coefficients}:}{Object of class \code{"matrix"} the estimated coefficients from fitting a model for truncated regression using the Quadratic Mode Estimator (QME) }
     \item{\code{startcoef}:}{Object of class \code{"matrix"} the starting coefficients used when fitting the model }
-    \item{\code{cvalues}:}{Object of class \code{"matrix"} the thresholds used }
-    \item{\code{value}:}{Object of class \code{"numeric"} the value of the objective function corresponding to \code{coefficients} }
+    \item{\code{cvalues}:}{Object of class \code{"data.frame"} containing information about the threshold values used }
+   \item{\code{value}:}{Object of class \code{"numeric"} the value of the objective function corresponding to \code{coefficients} }
     \item{\code{counts}:}{Object of class \code{"integer"} number of iterations until convergence}
     \item{\code{convergence}:}{Object of class \code{"integer"} indicating whether convergence was achieved }
     \item{\code{message}:}{Object of class \code{"character"} a character string giving any additional information returned by the optimizer }
@@ -36,7 +36,7 @@ Class \code{"\linkS4class{lt}"}, directly.
 \section{Methods}{
   \describe{
     \item{print}{\code{signature(x = "summary.lt")}: print method }
-	 }
+   }
 }
 \author{
  Anita Lindmark and Maria Karlsson

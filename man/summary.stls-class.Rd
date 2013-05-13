@@ -35,7 +35,7 @@ Class \code{"\linkS4class{stls}"}, directly.
 \section{Methods}{
   \describe{
     \item{print}{\code{signature(x = "summary.stls")}: print method }
-	 }
+   }
 }
 \author{
  Anita Lindmark and Maria Karlsson

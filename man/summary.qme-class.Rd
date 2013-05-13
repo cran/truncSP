@@ -3,7 +3,7 @@
 \docType{class}
 \alias{summary.qme-class}
 
-\title{Class "summary.qme"}
+\title{Class \code{"summary.qme"}}
 \description{
  Documentation on S4 class \code{"summary.qme"}
 }
@@ -11,14 +11,14 @@
 Objects from the class are usually obtained by a calling \code{summary} on an object of class \code{"\linkS4class{qme}"}.
 }
 \section{Slots}{
-  \describe{
-    \item{\code{level}:}{Object of class \code{"numeric"} the level of confidence for confidence intervals }
+\describe{
+      \item{\code{level}:}{Object of class \code{"numeric"} the level of confidence for confidence intervals }
     \item{\code{confint}:}{Object of class \code{"matrix"} confidence intervals for regression coefficients }
     \item{\code{bootconfint}:}{Object of class \code{"matrix"} bootstrap confidence intervals for regression coefficients }
     \item{\code{call}:}{Object of class \code{"call"} the function call }
     \item{\code{coefficients}:}{Object of class \code{"matrix"} the estimated coefficients from fitting a model for truncated regression using the Quadratic Mode Estimator (QME) }
     \item{\code{startcoef}:}{Object of class \code{"matrix"} the starting coefficients used when fitting the model }
-    \item{\code{cval}:}{Object of class \code{"numeric"} bandwidth used }
+    \item{\code{cval}:}{Object of class \code{"data.frame"} containing information on the threshold value used }
     \item{\code{value}:}{Object of class \code{"numeric"} the value of the objective function corresponding to \code{coefficients} }
     \item{\code{counts}:}{Object of class \code{"integer"} number of iterations until convergence}
     \item{\code{convergence}:}{Object of class \code{"integer"} indicating whether convergence was achieved }
@@ -36,7 +36,7 @@ Class \code{"\linkS4class{qme}"}, directly.
 \section{Methods}{
   \describe{
     \item{print}{\code{signature(x = "summary.qme")}: print method }
-	 }
+   }
 }
 \author{
  Anita Lindmark and Maria Karlsson
