@@ -1,10 +1,10 @@
-95cc699ed05400e02f7bd3a0ad9b8e79 *DESCRIPTION
+4b211d570f7d7ab7ffd2e9031ae9a1ce *DESCRIPTION
 310ff30c7d8577eff94d99b948ea86b6 *NAMESPACE
 dbf2eed9d9a0dcbb0eab78ad83469e34 *R/lt.R
 9edf6f6a8b524bb4dd9ba84530b9a02b *R/ltbootstrap.R
 9cadf598a0835f4890eb7cf5addf3205 *R/ltclasses.r
 4da84ff4af8083242092538b5d24e9a0 *R/ltmethods.r
-f364a39648642ad74478975beec49b5e *R/qme.R
+b560035c50d0caca75687bafda8315e4 *R/qme.R
 138eaf7f11d6657708d8ac6a569fba77 *R/qmebootstrap.R
 d6fa4b716a05a949e17ec7ad201b97e9 *R/qmeclasses.r
 99b555cda55fb7c75a202665296d45ac *R/qmemethods.r

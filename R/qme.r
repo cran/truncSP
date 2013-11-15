@@ -8,7 +8,7 @@ funcval.QME <- function(bet,x,y,cv)
 
 mlcoef <- function(mf)
 {
-	mlc<-truncreg(formula=mf, point=0, direction="left")$coef 
+	mlc<-truncreg(formula=attributes(mf),data=mf, point=0, direction="left")$coef 
 	return(mlc)
 }
 
@@ -19,7 +19,7 @@ qme.fit <- function(formula,mf,point,direction,bet,cv,...)
   y <- model.response(mf, "numeric")   
   y <- matrix(y)
   x <- model.matrix(formula,mf)
-  
+ 
   dots <- list(...)
 
 	if (is.null(dots$control)) control <- list(maxit=2000) else control <- dots$control
@@ -67,8 +67,7 @@ qme <- function(formula,data,point=0,direction="left",cval="ml", const=1,beta="m
 	mf$drop.unused.levels <- TRUE			
 	mf[[1L]] <- as.name("model.frame") 		
 	mf <- eval(mf, parent.frame())
-  
-  		
+		
 	if(point!=0)
 		mf[,1] <- mf[,1]-point
 
@@ -136,8 +135,11 @@ qme <- function(formula,data,point=0,direction="left",cval="ml", const=1,beta="m
 		if(cval!="ols" && cval!="ml")
 			stop("'cval' must be numeric or a valid method.")
 	}
+  
 
 	z <- qme.fit(formula,mf,point,direction,bet,cv,...) ###
+ 
+  
 	
 	if(covar)
 	{
