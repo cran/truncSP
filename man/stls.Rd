@@ -66,7 +66,7 @@ additional arguments. For \code{stls} the number of bootstrap replicates can be 
 }
 }
 \details{
-Uses \code{\link{optim}} ("Nelder--Mead" method) to minimize the objective function described in Powell (1986) wrt the vector of regression coefficients in order to find the STLS estimates. The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (for more information see the documentation for \code{\link{optim}}). \cr\cr As the starting values of the regression coefficients can have a great impact on the result of the minimization it is recommended to use one of the methods for generating these rather than supplying the values manually (unless one is confident that one has a good idea of what the starting values should be).
+Uses \code{\link{optim}} ("Nelder--Mead" method) to minimize the objective function described in Powell (1986) wrt the vector of regression coefficients in order to find the STLS estimates (see Karlsson and Lindmark 2014 for more detailed information and background). The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (for more information see the documentation for \code{\link{optim}}). \cr\cr As the starting values of the regression coefficients can have a great impact on the result of the minimization it is recommended to use one of the methods for generating these rather than supplying the values manually (unless one is confident that one has a good idea of what the starting values should be). 
 }
 \value{
 \code{stls} returns an object of class \code{"stls"}. \cr\cr The function \code{summary} prints a summary of the results, including two types of confidence intervals (normal approximation and percentile method). The generic accessor functions
@@ -86,6 +86,7 @@ Uses \code{\link{optim}} ("Nelder--Mead" method) to minimize the objective funct
   \item{bootrepl }{if \code{covar}\code{=}\code{TRUE}, the bootstrap replicates}
 }
 \references{
+Karlsson, M., Lindmark, A. (2014) truncSP: An R Package for Estimation of Semi-Parametric Truncated Linear Regression Models, \emph{Journal of Statistical Software}, \bold{57(14)}, pp 1--19, \url{http://www.jstatsoft.org/v57/i14/} \cr\cr
 Powell, J. (1986) Symmetrically Trimmed Least Squares Estimation for Tobit Models, \emph{Econometrika}, \bold{54(6)}, pp 1435--1460
 }
 \author{

@@ -71,7 +71,7 @@ qme(formula, data, point = 0, direction = "left", cval = "ml",
 }
 }
 \details{
-  Finds the QME estimates of the regression coefficients by maximizing the objective function described in Lee (1993) wrt the vector of regression coefficients. The maximization is performed by \code{\link{optim}} using the "Nelder--Mead" method. The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (for more information see the documentation for \code{\link{optim}}). \cr\cr The starting values of the regression coefficients can have a great impact on the result of the maximization. For this reason it is recommended to use one of the methods for generating these rather than supplying the values manually, unless one is confident that one has a good idea of what the starting values should be.
+  Finds the QME estimates of the regression coefficients by maximizing the objective function described in Lee (1993) wrt the vector of regression coefficients. The maximization is performed by \code{\link{optim}} using the "Nelder--Mead" method. The maximum number of iterations is set at 2000, but this can be adjusted by setting \code{control=list(maxit=\dots)} (for more information see the documentation for \code{\link{optim}}). \cr\cr The starting values of the regression coefficients can have a great impact on the result of the maximization. For this reason it is recommended to use one of the methods for generating these rather than supplying the values manually, unless one is confident that one has a good idea of what the starting values should be. For more detailed information see Karlsson and Lindmark (2014).
 }
 \value{
   \code{qme} returns an object of class \code{"qme"}. \cr\cr The function \code{summary} prints a summary of the results, including two types of confidence intervals (normal approximation and percentile method). The generic accessor functions
@@ -93,6 +93,7 @@ qme(formula, data, point = 0, direction = "left", cval = "ml",
 }
 \references{
 Karlsson, M. (2004) Finite sample properties of the QME, \emph{Communications in Statistics - Simulation and Computation}, \bold{5}, pp 567--583\cr\cr
+Karlsson, M., Lindmark, A. (2014) truncSP: An R Package for Estimation of Semi-Parametric Truncated Linear Regression Models, \emph{Journal of Statistical Software}, \bold{57(14)}, pp 1--19, \url{http://www.jstatsoft.org/v57/i14/} \cr\cr
 Laitila, T. (2001) Properties of the QME under asymmetrically distributed disturbances, \emph{Statistics & Probability Letters}, \bold{52}, pp 347--352\cr\cr
 Lee, M. (1993) Quadratic mode regression, \emph{Journal of Econometrics}, \bold{57}, pp 1-19\cr\cr
 Lee, M. & Kim, H. (1998) Semiparametric econometric estimators for a truncated regression model: a review with an extension, \emph{Statistica Neerlandica}, \bold{52(2)}, pp 200--225

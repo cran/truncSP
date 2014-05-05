@@ -75,7 +75,7 @@ additional arguments. For \code{lt} the number of bootstrap replicates can be ad
 }
 }
 \details{
-Minimizes the objective function described in Karlsson (2006) wrt the vector of regression coefficients, in order to find the LT estimates. The minimization is performed by \code{\link{optim}} using the "Nelder--Mead" method, and a maximum number of iterations of 2000. The maximum number of iterations can be adjusted by setting \code{control=list(maxit=\dots)} (for more information see the documentation for \code{\link{optim}}). \cr\cr It is recommended to use one of the methods for generating the starting values of the regression coefficients (see argument \code{beta}) rather than supplying these manually, unless one is confident that one has a good idea of what these should be. This because the starting values can have a great impact on the result of the minimization. \cr\cr Note that setting \code{cupper=1} means that the LT estimates will coincide with the estimates from the Quadratic Mode Estimator (see function \code{\link{qme}}).
+Minimizes the objective function described in Karlsson (2006) wrt the vector of regression coefficients, in order to find the LT estimates. The minimization is performed by \code{\link{optim}} using the "Nelder--Mead" method, and a maximum number of iterations of 2000. The maximum number of iterations can be adjusted by setting \code{control=list(maxit=\dots)} (for more information see the documentation for \code{\link{optim}}). \cr\cr It is recommended to use one of the methods for generating the starting values of the regression coefficients (see argument \code{beta}) rather than supplying these manually, unless one is confident that one has a good idea of what these should be. This because the starting values can have a great impact on the result of the minimization. \cr\cr Note that setting \code{cupper=1} means that the LT estimates will coincide with the estimates from the Quadratic Mode Estimator (see function \code{\link{qme}}). For more detailed information see Karlsson and Lindmark (2014).
 }
 \value{
 \code{lt} returns an object of class \code{"lt"}. \cr\cr The function \code{summary} prints a summary of the results, including two types of confidence intervals (normal approximation and percentile method). The generic accessor functions
@@ -96,7 +96,8 @@ Minimizes the objective function described in Karlsson (2006) wrt the vector of 
   \item{bootrepl }{if \code{covar}\code{=}\code{TRUE}, the bootstrap replicates}
 }
 \references{
-Karlsson, M. (2006) Estimators of regression parameters for truncated and censored data, \emph{Metrika}, \bold{63}, pp 329--341
+Karlsson, M. (2006) Estimators of regression parameters for truncated and censored data, \emph{Metrika}, \bold{63}, pp 329--341\cr\cr
+Karlsson, M., Lindmark, A. (2014) truncSP: An R Package for Estimation of Semi-Parametric Truncated Linear Regression Models, \emph{Journal of Statistical Software}, \bold{57(14)}, pp 1--19, \url{http://www.jstatsoft.org/v57/i14/} \cr\cr
 }
 \author{
 Anita Lindmark and Maria Karlsson
